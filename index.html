@@ -1,135 +1,134 @@
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محل الشعب | للملابس والإكسسوارات</title>
-    <!-- Tailwind CSS للتصميم الاحترافي -->
+    <title>محل الشعب | المنصة العالمية للموضة</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- مكتبة الأيقونة FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- خطوط جوجل العربية -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Cairo', sans-serif; }
+        body { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
+        .product-card:hover .arrow-btn { opacity: 1; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-900 antialiased">
 
-    <!-- القائمة العلوية (Navbar) -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="bg-black text-white text-center py-2 text-xs font-semibold tracking-wide">
+        شحن مجاني للطلبات الأكثر من 50,000 ل.ي | عروض حصرية لفترة محدودة
+    </div>
+
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-indigo-600 flex items-center gap-2">
-                <i class="fa-solid af-bag-shopping"></i> محل الشعب
+            <a href="#" class="text-2xl font-black text-neutral-900 tracking-wider flex items-center gap-2">
+                <span class="bg-black text-white px-3 py-1 rounded-sm text-xl"><i class="fa-solid fa-bag-shopping"></i></span>
+                محل الشعب<span class="text-indigo-600 text-xs font-bold">GLOBAL</span>
             </a>
+            
+            <div class="hidden md:flex gap-8 font-medium text-sm text-gray-600">
+                <a href="#offers" class="hover:text-red-500 transition">أقوى العروض 🔥</a>
+                <a href="#shop" onclick="filterCategory('الكل')" class="hover:text-black transition">كل المنتجات</a>
+                <a href="#shop" onclick="filterCategory('رجالي')" class="hover:text-black transition">التشكيلة الرجالية</a>
+                <a href="#shop" onclick="filterCategory('نسائي')" class="hover:text-black transition">التشكيلة النسائية</a>
+            </div>
+
             <div class="flex gap-4 items-center">
-                <span class="text-sm bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full border border-indigo-200">
-                    <i class="fa-solid fa-store"></i> متصل بالشرق الأوسط
-                </span>
+                <a href="https://wa.me/YOUR_PHONE" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 transition shadow-sm">
+                    <i class="fa-brands fa-whatsapp text-base"></i> خدمة العملاء
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- واجهة ترحيبية (Hero Section) -->
-    <header class="bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-16 px-6 text-center shadow-inner">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">أحدث صيحات الموضة بين يديك</h1>
-        <p class="text-indigo-100 max-w-xl mx-auto text-base md:text-lg">اكتشف تشكيلتنا المميزة من الملابس والإكسسوارات الرجالية والنسائية الفاخرة بأفضل الأسعار.</p>
-    </header>
-
-    <!-- أزرار الفلترة والتصنيفات -->
-    <section class="container mx-auto px-6 mt-10">
-        <div class="flex flex-wrap justify-center gap-3" id="filter-buttons">
-            <button onclick="filterCategory('الكل')" class="filter-btn active bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold shadow transition">الكل</button>
-            <button onclick="filterCategory('رجالي')" class="filter-btn bg-white text-gray-700 hover:bg-indigo-50 px-5 py-2 rounded-full font-semibold shadow-sm border border-gray-200 transition">رجالي</button>
-            <button onclick="filterCategory('نسائي')" class="filter-btn bg-white text-gray-700 hover:bg-indigo-50 px-5 py-2 rounded-full font-semibold shadow-sm border border-gray-200 transition">نسائي</button>
-            <button onclick="filterCategory('ملابس')" class="filter-btn bg-white text-gray-700 hover:bg-indigo-50 px-5 py-2 rounded-full font-semibold shadow-sm border border-gray-200 transition">ملابس</button>
-            <button onclick="filterCategory('إكسسوارات')" class="filter-btn bg-white text-gray-700 hover:bg-indigo-50 px-5 py-2 rounded-full font-semibold shadow-sm border border-gray-200 transition">إكسسوارات</button>
+    <section id="offers" class="relative bg-neutral-900 text-white overflow-hidden min-h-[500px] flex items-center">
+        <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200');"></div>
+        <div class="absolute inset-0 bg-gradient-to-l from-black via-black/70 to-transparent"></div>
+        
+        <div class="container mx-auto px-6 relative z-10 py-20 text-right">
+            <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block animate-pulse">خصومات تصل إلى 50%</span>
+            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight max-w-2xl">أناقتك العالمية بلمسة محلية ذكية</h1>
+            <p class="text-gray-300 max-w-lg text-base md:text-lg mb-8 font-light">تصفح أحدث صيحات الموضة المرفوعة مباشرة من صالة العرض عبر الهواتف الذكية. اطلب الآن واستلم فوراً.</p>
+            <a href="#shop" class="bg-white hover:bg-gray-100 text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide shadow-lg transition inline-block">تسوق التشكيلة الآن</a>
         </div>
     </section>
 
-    <!-- شبكة عرض المنتجات (Products Grid) -->
+    <section id="shop" class="container mx-auto px-6 pt-16">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-200 pb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-neutral-900">صالة العرض الرقمية</h2>
+                <p class="text-xs text-gray-500 mt-1">اضغط على التصنيفات لتصفية المنتجات فوراً</p>
+            </div>
+            <div class="flex flex-wrap gap-2" id="filter-buttons">
+                <button onclick="filterCategory('الكل')" class="filter-btn bg-black text-white px-5 py-2 rounded-full text-xs font-semibold shadow-sm transition">الكل</button>
+                <button onclick="filterCategory('رجالي')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">رجالي</button>
+                <button onclick="filterCategory('نسائي')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">نسائي</button>
+                <button onclick="filterCategory('ملابس')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">ملابس</button>
+                <button onclick="filterCategory('إكسسوارات')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">إكسسوارات</button>
+            </div>
+        </div>
+    </section>
+
     <main class="container mx-auto px-6 py-10">
-        <!-- شاشة التحميل المؤقتة -->
         <div id="loading" class="text-center py-20">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-indigo-600 mb-4"></div>
-            <p class="text-gray-500 font-medium">جاري جلب المنتجات من المخزن الرقمي...</p>
+            <div class="inline-block animate-spin rounded-full h-10 w-10 border-2 border-t-indigo-600 border-gray-200 mb-4"></div>
+            <p class="text-gray-400 text-sm font-medium">جاري تحديث الواجهة السحابية للمتجر...</p>
         </div>
 
-        <!-- حاوية المنتجات -->
         <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 hidden">
-            <!-- المنتجات ستظهر هنا برمجياً -->
-        </div>
+            </div>
 
-        <!-- رسالة عند عدم وجود منتجات -->
         <div id="no-products" class="text-center py-20 hidden">
-            <i class="fa-regular fa-folder-open text-5xl text-gray-300 mb-4"></i>
-            <p class="text-gray-500">لا توجد منتجات متوفرة في هذا القسم حالياً.</p>
+            <i class="fa-regular fa-face-frown text-4xl text-gray-300 mb-3"></i>
+            <p class="text-gray-400 text-sm">عذراً، لا توجد قطع متوفرة في هذا القسم حالياً.</p>
         </div>
     </main>
 
-    <!-- تذييل الصفحة (Footer) -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center border-t border-gray-800 mt-20">
-        <p class="text-sm">© 2026 محل الشعب. جميع الحقوق محفوظة | لوحة التحكم تدار بواسطة AppSheet</p>
+    <footer class="bg-black text-gray-500 py-12 text-center border-t border-neutral-900 mt-30">
+        <p class="text-sm text-gray-400 font-bold mb-2">محل الشعب GLOBAL © 2026</p>
+        <p class="text-xs max-w-md mx-auto leading-relaxed">منصة تجريبية عالمية مبنية بأحدث تقنيات الويب السريع ومربوطة كلياً بلوحة تحكم ذكية عبر الهواتف المحمولة بدون أي تكاليف صيانة.</p>
     </footer>
 
-    <!-- البرمجة الذكية للربط والتحميل (JavaScript) -->
     <script>
-        // ================= الإعدادات الحرة (ضع بياناتك هنا) =================
+        // ================= الإعدادات (ضع بياناتك الحقيقية هنا ليعمل فورا) =================
         const CONFIG = {
-            spreadsheetId: '1siyS5wYgZ67HfdFx98127dmcNiUDLNuAAhZ15PC7raQ', // ضع معرّف جدول جوجل شيت هنا
-            appId: 'fff81242-afbe-4e49-aa96-5ba09e74b131',       // ضع الـ App ID الخاص بتطبيق آب شيت هنا
-            tableName: 'المنتجات'                 // اسم ورقة العمل (الشيت) بدقة
+            spreadsheetId: '1siyS5wYgZ67HfdFx98127dmcNiUDLNuAAhZ15PC7raQ', 
+            appId: 'fff81242-afbe-4e49-aa96-5ba09e74b131', // معرف تطبيقك الصحيح
+            tableName: 'المنتجات',
+            whatsappNumber: '967737207420' // رقم واتساب التاجر مع الرمز الدولي بدون أصفار أو (+)
         };
-        // ===================================================================
+        
+        // =================================================================================
 
         let allProducts = [];
 
-        // دالة جلب البيانات من قوقل شيت وتحويلها لـ JSON
+        // دالة جلب البيانات الفورية من جوجل شيت
         async function loadProducts() {
             try {
-                // استدعاء الشيت كملف CSV عام لسهولة وسرعة القراءة بدون تعقيد المفاتيح
                 const url = `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/export?format=csv&id=${CONFIG.spreadsheetId}`;
                 const response = await fetch(url);
                 const csvText = await response.text();
                 
                 allProducts = parseCSV(csvText);
                 
-                // إخفاء شاشة التحميل وعرض المنتجات
                 document.getElementById('loading').classList.add('hidden');
-                document.getElementById('products-container').classList.remove('hidden');
-                
-                // عرض المنتجات المتوفرة فقط عند فتح الموقع لأول مرة
                 renderProducts(allProducts.filter(p => p.الحالة === 'متوفر'));
-                
             } catch (error) {
                 console.error("خطأ في جلب البيانات:", error);
-                document.getElementById('loading').innerHTML = `
-                    <p class="text-red-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> عذراً، فشل الاتصال بقاعدة البيانات. تأكد من إعدادات المشاركة.</p>
-                `;
+                document.getElementById('loading').innerHTML = `<p class="text-red-500 text-xs font-bold">فشل النظام في الاتصال بـ Google Sheets. تأكد من إعدادات المشاركة للرابط.</p>`;
             }
         }
 
-        // محول البيانات من صيغة شيت (CSV) إلى كائنات برمجية (Objects)
         function parseCSV(text) {
             const lines = text.split('\n');
             const headers = lines[0].split(',').map(h => h.trim().replace(/[\r\n]/g, ""));
             const list = [];
-            
             for (let i = 1; i < lines.length; i++) {
                 if (!lines[i]) continue;
-                
-                // معالجة الفواصل لتجنب مشاكل النصوص الطويلة في الوصف
                 const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                 const obj = {};
-                
                 for (let j = 0; j < headers.length; j++) {
                     let val = currentline[j] ? currentline[j].trim() : "";
-                    // تنظيف علامات التنصيص الزائدة
                     val = val.replace(/^"|"$/g, "").replace(/[\r\n]/g, "");
                     obj[headers[j]] = val;
                 }
@@ -138,54 +137,70 @@
             return list;
         }
 
-        // دالة تركيب وعرض بطاقات المنتجات وتطبيق كود الصور الذكي
+        // دالة عرض المنتجات مع ميزة السلايدر للصور المتعددة وزر الواتساب المتقدم
         function renderProducts(products) {
             const container = document.getElementById('products-container');
-            const noProducts = document.getElementById('no-products');
             container.innerHTML = '';
             
             if (products.length === 0) {
                 container.classList.add('hidden');
-                noProducts.classList.remove('hidden');
+                document.getElementById('no-products').classList.remove('hidden');
                 return;
             }
-            
-            noProducts.classList.add('hidden');
+            document.getElementById('no-products').classList.add('hidden');
             container.classList.remove('hidden');
 
-            products.forEach(product => {
-                // الكود البرمجي الذي يحل المشكلة الأولى (تركيب رابط عرض صور AppSheet المباشر)
-                let imageUrl = 'https://via.placeholder.com/400x400?text=No+Image'; // صورة افتراضية
+            products.forEach((product, pIndex) => {
+                // تجميع الصور المتاحة للمنتج (تأكد من تسمية الأعمدة في الشيت: الصورة 1، الصورة 2، الصورة 3)
+                let images = [];
+                if(product['الصورة 1'] || product['الصورة']) images.push(product['الصورة 1'] || product['الصورة']);
+                if(product['الصورة 2']) images.push(product['الصورة 2']);
+                if(product['الصورة 3']) images.push(product['الصورة 3']);
                 
-                if (product.الصورة) {
-                    // تشفير مسار الملف لمنع مشاكل الحروف العربية أو الفراغات في الرابط
-                    const encodedFileName = encodeURIComponent(product.الصورة);
-                    imageUrl = `https://www.appsheet.com/template/gettablefileurl?appName=${CONFIG.appId}&tableName=${encodeURIComponent(CONFIG.tableName)}&fileName=${encodedFileName}`;
-                }
+                if(images.length === 0) images.push('https://via.placeholder.com/600x600?text=No+Image');
 
-                // تصميم بطاقة المنتج (Card)
+                // بناء الروابط الكاملة من سيرفر AppSheet لكل صورة
+                let imageUrls = images.map(img => {
+                    if (img.startsWith('http')) return img;
+                    return `https://www.appsheet.com/template/gettablefileurl?appName=${CONFIG.appId}&tableName=${encodeURIComponent(CONFIG.tableName)}&fileName=${encodeURIComponent(img)}`;
+                });
+
+                // تجهيز كود تصفح الصور المتعددة (Slider)
+                let imagesHtml = imageUrls.map((url, i) => `
+                    <img id="img-${pIndex}-${i}" src="${url}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100' : 'opacity-0'}" loading="lazy">
+                `).join('');
+
+                // تجهيز نص رسالة الواتساب التلقائية الذكية جداً للتاجر
+                const whatsappMessage = `مرحباً محل الشعب الفخم 🌟\nأود طلب المنتج التالي المعروض في موقعكم الإلكتروني:\n\n📦 اسم المنتج: ${product['اسم المنتج']}\n🔢 كود المنتج (ID): ${product.ID}\n💰 السعر الحالي: ${parseFloat(product.السعر || 0).toLocaleString()} ل.ي\n\n🔗 رابط صورة القطعة لضمان الطلب:\n${imageUrls[0]}`;
+                const encodedMessage = encodeURIComponent(whatsappMessage);
+                const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMessage}`;
+
+                // كود بطاقة العرض العالمية (Card)
                 const card = `
-                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden flex flex-col group transition duration-300">
-                        <!-- حاوية الصورة -->
-                        <div class="relative overflow-hidden bg-gray-100 aspect-square">
-                            <img src="${imageUrl}" alt="${product['اسم المنتج']}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">
-                            <span class="absolute top-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full font-medium backdrop-blur-sm">
-                                ${product.القسم}
-                            </span>
+                    <div class="product-card bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative group">
+                        
+                        <div class="relative aspect-[3/4] w-full bg-neutral-100 overflow-hidden">
+                            ${imagesHtml}
+                            
+                            <span class="absolute top-3 right-3 bg-black text-white text-[10px] font-bold px-2.5 py-1 uppercase rounded-sm z-10 tracking-wider">${product.القسم}</span>
+                            
+                            ${imageUrls.length > 1 ? `
+                                <button onclick="changeImage(${pIndex}, -1, ${imageUrls.length})" class="arrow-btn opacity-0 absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-7 h-7 rounded-full flex items-center justify-center shadow-sm transition-all z-20"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                                <button onclick="changeImage(${pIndex}, 1, ${imageUrls.length})" class="arrow-btn opacity-0 absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-7 h-7 rounded-full flex items-center justify-center shadow-sm transition-all z-20"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+                            ` : ''}
                         </div>
                         
-                        <!-- تفاصيل المنتج -->
-                        <div class="p-5 flex flex-col flex-grow">
-                            <span class="text-xs text-indigo-600 font-semibold uppercase tracking-wider mb-1">${product.النوع}</span>
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-1">${product['اسم المنتج']}</h3>
-                            <p class="text-sm text-gray-500 line-clamp-2 mb-4 flex-grow">${product.الوصف || 'لا يوجد وصف متاح.'}</p>
+                        <div class="p-4 flex flex-col flex-grow text-right">
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">${product.النوع}</span>
+                            <h3 class="text-base font-bold text-neutral-900 mb-1 tracking-tight line-clamp-1">${product['اسم المنتج']}</h3>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-4 font-light leading-relaxed">${product.الوصف || 'لا يوجد وصف للمنتج.'}</p>
                             
-                            <!-- السعر والكمية -->
-                            <div class="flex justify-between items-center pt-3 border-t border-gray-50">
-                                <span class="text-xl font-bold text-indigo-600">${parseFloat(product.السعر).toLocaleString()} ل.ي</span>
-                                <span class="text-xs ${parseInt(product.الكمية) > 0 ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50'} px-2 py-1 rounded font-medium">
-                                    ${parseInt(product.الكمية) > 0 ? `متوفر: ${product.الكمية}` : 'نفد المخزون'}
-                                </span>
+                            <div class="flex justify-between items-center pt-3 border-t border-gray-50 mt-auto">
+                                <span class="text-lg font-black text-neutral-900">${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-xs font-normal text-gray-500">ل.ي</span></span>
+                                
+                                <a href="${whatsappUrl}" onclick="countClick('${product.ID}')" target="_blank" class="bg-black hover:bg-neutral-800 text-white text-xs font-bold px-4 py-2.5 rounded-sm transition flex items-center gap-2">
+                                    <i class="fa-brands fa-whatsapp text-sm text-emerald-400"></i> اطلب الآن
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -194,29 +209,46 @@
             });
         }
 
-        // دالة تصفية المنتجات حسب الأزرار
+        // دالة التنقل بين الصور المتعددة للمنتج داخل الكرت
+        let currentImgIndexes = {};
+        function changeImage(productIdx, direction, totalImages) {
+            event.preventDefault();
+            if (!currentImgIndexes[productIdx]) currentImgIndexes[productIdx] = 0;
+            
+            // إخفاء الصورة الحالية
+            document.getElementById(`img-${productIdx}-${currentImgIndexes[productIdx]}`).classList.replace('opacity-100', 'opacity-0');
+            
+            // حساب مؤشر الصورة الجديدة
+            currentImgIndexes[productIdx] = (currentImgIndexes[productIdx] + direction + totalImages) % totalImages;
+            
+            // إظهار الصورة الجديدة
+            document.getElementById(`img-${productIdx}-${currentImgIndexes[productIdx]}`).classList.replace('opacity-0', 'opacity-100');
+        }
+
+        // دالة تصفية المنتجات الفورية
         function filterCategory(category) {
-            // تغيير ستايل الأزرار لتوضيح الزر النشط
             const buttons = document.querySelectorAll('#filter-buttons button');
             buttons.forEach(btn => {
                 if(btn.innerText === category) {
-                    btn.className = "bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold shadow transition";
+                    btn.className = "filter-btn bg-black text-white px-5 py-2 rounded-full text-xs font-semibold shadow-sm transition";
                 } else {
-                    btn.className = "bg-white text-gray-700 hover:bg-indigo-50 px-5 py-2 rounded-full font-semibold shadow-sm border border-gray-200 transition";
+                    btn.className = "filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition";
                 }
             });
 
-            // تصفية القائمة (عرض المتوفر فقط الذي يطابق الفلتر)
             let filtered = allProducts.filter(p => p.الحالة === 'متوفر');
-            
             if (category !== 'الكل') {
                 filtered = filtered.filter(p => p.القسم === category || p.النوع === category);
             }
-            
             renderProducts(filtered);
         }
 
-        // تشغيل الجلب التلقائي للبيانات عند فتح الصفحة فوراً
+        // دالة إحصائية (اختيارية): يمكنك تطويرها لإرسال كليك للمقايضة المالية مع التاجر
+        function countClick(productId) {
+            console.log(`تم تسجيل نقرة طلب للمنتج رقم: ${productId}`);
+            // هنا يمكنك مستقبلاً ربط كود يضيف +1 في خلايا الجوجل شيت لتوثيق المبيعات للتاجر
+        }
+
         window.onload = loadProducts;
     </script>
 </body>
