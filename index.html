@@ -250,6 +250,9 @@
         }
 
         window.onload = loadProducts;
+        // جلب البيانات وتحديث المنتجات تلقائياً كل 30 ثانية (30000 مللي ثانية)
+        setInterval(loadProducts, 30000);
+        
     </script>
 </body>
 </html>
