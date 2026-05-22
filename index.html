@@ -3,119 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 1. إعدادات قوقل (SEO) -->
     <title>محل الشعب | المنصة العالمية للموضة</title>
+    <meta name="description" content="تصفح أحدث صيحات الموضة العالمية والملابس الفخمة عبر متجر محل الشعب المربوط بلوحة تحكم ذكية وسريعة.">
+    <link rel="icon" type="image/png" href="https://yourwebsite.com/logo.png">
+
+    <!-- 2. إعدادات مشاركة الرابط (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alshaab-institution.netlify.app">
+    <meta property="og:title" content="محل الشعب GLOBAL - أناقتك بلمسة ذكية">
+    <meta property="og:description" content="اكتشف تشكيلتنا الفخمة من الملابس والإكسسوارات. تسوق مباشرة وتواصل معنا بنقرة زر واحدة عبر متجرنا السحابي السريع.">
+    <meta property="og:image" content="https://sparkon-alsheb.netlify.app/alsheb2.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <link rel="icon" type="image/png" href="https://sparkon-alsheb.netlify.app/alsheb2.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
         body { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
-        .product-card:hover .arrow-btn { opacity: 1; }
+        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .product-card:hover { transform: translateY(-8px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* تأثيرات تنقل الصور التلقائية (الألبوم) */
+        .fade-img { transition: opacity 0.6s ease-in-out; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 antialiased">
+<body class="bg-gray-50 text-gray-900 antialiased overflow-x-hidden">
 
-    <div class="bg-black text-white text-center py-2 text-xs font-semibold tracking-wide">
+    <div class="bg-black text-white text-center py-1.5 text-[10px] md:text-xs font-semibold tracking-wide px-4">
         شحن مجاني للطلبات الأكثر من 50,000 ل.ي | عروض حصرية لفترة محدودة
     </div>
 
-    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-black text-neutral-900 tracking-wider flex items-center gap-2">
-                <span class="bg-black text-white px-3 py-1 rounded-sm text-xl"><i class="fa-solid fa-bag-shopping"></i></span>
-                محل الشعب<span class="text-indigo-600 text-xs font-bold">GLOBAL</span>
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
+        <div class="container mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-xl md:text-2xl font-black text-neutral-900 tracking-wide flex items-center gap-1.5">
+                <span class="bg-black text-white px-2 py-0.5 rounded text-sm md:text-xl"><i class="fa-solid fa-bag-shopping"></i></span>
+                <span>محل الشعب<span class="text-indigo-600 text-[10px] font-bold mr-1">GLOBAL</span></span>
             </a>
-            
             <div class="hidden md:flex gap-8 font-medium text-sm text-gray-600">
                 <a href="#offers" class="hover:text-red-500 transition">أقوى العروض 🔥</a>
                 <a href="#shop" onclick="filterCategory('الكل')" class="hover:text-black transition">كل المنتجات</a>
                 <a href="#shop" onclick="filterCategory('رجالي')" class="hover:text-black transition">التشكيلة الرجالية</a>
                 <a href="#shop" onclick="filterCategory('نسائي')" class="hover:text-black transition">التشكيلة النسائية</a>
             </div>
-
-            <div class="flex gap-4 items-center">
-                <a href="https://wa.me/YOUR_PHONE" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 transition shadow-sm">
-                    <i class="fa-brands fa-whatsapp text-base"></i> خدمة العملاء
+            <div>
+                <a href="https://wa.me/967737207420" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2.5 md:px-4 md:py-2 rounded-full text-xs font-bold flex items-center gap-2 transition shadow-sm">
+                    <i class="fa-brands fa-whatsapp text-base md:text-sm"></i>
+                    <span class="hidden md:inline">خدمة العملاء</span>
                 </a>
             </div>
         </div>
     </nav>
 
-    <section id="offers" class="relative bg-neutral-900 text-white overflow-hidden min-h-[500px] flex items-center">
+    <section id="offers" class="relative bg-neutral-900 text-white overflow-hidden min-h-[350px] md:min-h-[450px] flex items-center animate__animated animate__fadeIn">
         <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200');"></div>
         <div class="absolute inset-0 bg-gradient-to-l from-black via-black/70 to-transparent"></div>
-        
-        <div class="container mx-auto px-6 relative z-10 py-20 text-right">
-            <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block animate-pulse">خصومات تصل إلى 50%</span>
-            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight max-w-2xl">أناقتك العالمية بلمسة محلية ذكية</h1>
-            <p class="text-gray-300 max-w-lg text-base md:text-lg mb-8 font-light">تصفح أحدث صيحات الموضة المرفوعة مباشرة من صالة العرض عبر الهواتف الذكية. اطلب الآن واستلم فوراً.</p>
-            <a href="#shop" class="bg-white hover:bg-gray-100 text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide shadow-lg transition inline-block">تسوق التشكيلة الآن</a>
+        <div class="container mx-auto px-6 relative z-10 py-12 text-right">
+            <span class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-widest mb-3 inline-block animate-pulse">خصومات تصل إلى 50%</span>
+            <h1 class="text-3xl md:text-6xl font-black mb-4 leading-tight max-w-2xl">أناقتك العالمية بلمسة محلية ذكية</h1>
+            <p class="text-gray-300 max-w-lg text-xs md:text-base mb-6 font-light">تصفح أحدث صيحات الموضة المرفوعة مباشرة من صالة العرض عبر الهواتف الذكية.</p>
+            <a href="#shop" class="bg-white hover:bg-gray-100 text-black px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-xs md:text-sm tracking-wide shadow-lg transition inline-block">تسوق التشكيلة الآن</a>
         </div>
     </section>
 
-    <section id="shop" class="container mx-auto px-6 pt-16">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-200 pb-6">
-            <div>
-                <h2 class="text-2xl font-bold text-neutral-900">صالة العرض الرقمية</h2>
-                <p class="text-xs text-gray-500 mt-1">اضغط على التصنيفات لتصفية المنتجات فوراً</p>
+    <section id="shop" class="container mx-auto px-4 md:px-6 pt-10">
+        <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-4 animate__animated animate__fadeInUp">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="relative md:col-span-2">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="search-input" oninput="applyFilters()" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 pr-10 pl-4 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition" placeholder="ابحث باسم المنتج أو القطعة بالكامل...">
+                </div>
+                <div>
+                    <select id="price-filter" onchange="applyFilters()" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:bg-white transition text-gray-600 font-medium">
+                        <option value="all">كل الأسعار</option>
+                        <option value="low">الأسعار الأقل من 20,000 ل.ي</option>
+                        <option value="high">الأسعار الأعلى من 20,000 ل.ي</option>
+                        <option value="asc">ترتيب: من الأقل إلى الأعلى</option>
+                        <option value="desc">ترتيب: من الأعلى إلى الأقل</option>
+                    </select>
+                </div>
             </div>
-            <div class="flex flex-wrap gap-2" id="filter-buttons">
-                <button onclick="filterCategory('الكل')" class="filter-btn bg-black text-white px-5 py-2 rounded-full text-xs font-semibold shadow-sm transition">الكل</button>
-                <button onclick="filterCategory('رجالي')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">رجالي</button>
-                <button onclick="filterCategory('نسائي')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">نسائي</button>
-                <button onclick="filterCategory('ملابس')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">ملابس</button>
-                <button onclick="filterCategory('إكسسوارات')" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition">إكسسوارات</button>
+            <div class="flex items-center gap-2 border-t border-gray-50 pt-3 overflow-x-auto no-scrollbar" id="filter-buttons">
+                <button onclick="filterCategory('الكل')" class="filter-btn bg-black text-white px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition">الكل</button>
+                <button onclick="filterCategory('رجالي')" class="filter-btn bg-white text-gray-600 hover:bg-gray-100 px-4 py-1.5 rounded-full text-xs font-semibold border border-gray-200 whitespace-nowrap transition">رجالي</button>
+                <button onclick="filterCategory('نسائي')" class="filter-btn bg-white text-gray-600 hover:bg-gray-100 px-4 py-1.5 rounded-full text-xs font-semibold border border-gray-200 whitespace-nowrap transition">نسائي</button>
+                <button onclick="filterCategory('ملابس')" class="filter-btn bg-white text-gray-600 hover:bg-gray-100 px-4 py-1.5 rounded-full text-xs font-semibold border border-gray-200 whitespace-nowrap transition">ملابس</button>
+                <button onclick="filterCategory('إكسسوارات')" class="filter-btn bg-white text-gray-600 hover:bg-gray-100 px-4 py-1.5 rounded-full text-xs font-semibold border border-gray-200 whitespace-nowrap transition">إكسسوارات</button>
             </div>
         </div>
     </section>
 
-    <main class="container mx-auto px-6 py-10">
+    <main class="container mx-auto px-4 md:px-6 py-8">
         <div id="loading" class="text-center py-20">
             <div class="inline-block animate-spin rounded-full h-10 w-10 border-2 border-t-indigo-600 border-gray-200 mb-4"></div>
-            <p class="text-gray-400 text-sm font-medium">جاري تحديث الواجهة السحابية للمتجر...</p>
+            <p class="text-gray-400 text-xs font-medium">جاري تحديث الواجهة السحابية للمتجر...</p>
         </div>
-
-        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 hidden">
-            </div>
+        <div id="products-container" class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-6 hidden"></div>
 
         <div id="no-products" class="text-center py-20 hidden">
             <i class="fa-regular fa-face-frown text-4xl text-gray-300 mb-3"></i>
-            <p class="text-gray-400 text-sm">عذراً، لا توجد قطع متوفرة في هذا القسم حالياً.</p>
+            <p class="text-gray-400 text-sm">عذراً، لم نجد أي قطع تطابق بحثك الحالي.</p>
         </div>
     </main>
 
-    <footer class="bg-black text-gray-500 py-12 text-center border-t border-neutral-900 mt-30">
-        <p class="text-sm text-gray-400 font-bold mb-2">محل الشعب GLOBAL © 2026</p>
-        <p class="text-xs max-w-md mx-auto leading-relaxed">منصة تجريبية عالمية مبنية بأحدث تقنيات الويب السريع ومربوطة كلياً بلوحة تحكم ذكية عبر الهواتف المحمولة بدون أي تكاليف صيانة.</p>
+    <div id="product-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative transform scale-95 transition-transform duration-300 flex flex-col md:flex-row text-right">
+            <button onclick="closeProductModal()" class="absolute top-4 left-4 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black transition z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-full md:w-1/2 aspect-[3/4] bg-neutral-100 relative overflow-hidden" id="modal-image-container">
+                </div>
+            <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                    <span id="modal-product-badge" class="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full inline-block mb-3"></span>
+                    <h2 id="modal-product-name" class="text-xl md:text-2xl font-black text-neutral-900 mb-2"></h2>
+                    <div id="modal-product-price" class="text-2xl font-black text-neutral-900 mb-4"></div>
+                    <p class="text-xs text-gray-400 font-bold mb-1">تفاصيل المنتج:</p>
+                    <p id="modal-product-desc" class="text-sm text-gray-600 leading-relaxed font-light mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100"></p>
+                </div>
+                <div id="modal-action-btn">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-neutral-900 text-gray-400 pt-16 pb-8 border-t border-neutral-800 mt-20">
+        <div class="container mx-auto px-4 md:px-6 text-center">
+            <div class="mb-6 animate__animated animate__pulse animate__infinite">
+                <i class="fa-solid fa-code text-3xl text-indigo-500 mb-2"></i>
+                <h3 class="text-white text-lg font-bold tracking-wide">التميز الهندسي والبرمجي</h3>
+            </div>
+            
+            <p class="text-sm max-w-xl mx-auto leading-relaxed mb-8 font-light text-gray-300">
+                تم تصميم وتطوير وتأمين هذا المتجر بالكامل بأحدث الهياكل البرمجية الخفيفة لضمان استقرار وسرعة الخدمة السحابية للتجار بدون تكاليف تشغيلية.
+            </p>
+            
+            <div class="border-t border-neutral-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+                <p class="text-gray-500">جميع الحقوق محفوظة لموقع محل الشعب © 2026</p>
+                
+                <p class="text-gray-400">
+                    حقوق النشر والطبع محفوظة لـ: 
+                    <a href="https://alshaab-institution.netlify.app" target="_blank" class="text-indigo-400 font-bold hover:text-indigo-300 transition underline underline-offset-4 decoration-indigo-500/50 flex items-center gap-1 inline-flex">
+                        <span>مؤسسة الشعب للمقاولات العامة - مأرب</span> 
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </p>
+                
+                <p class="text-gray-500 flex items-center gap-1">
+                    تنفيذ وتطوير: <span class="text-white font-semibold">الفريق البرمجي لدى المؤسسة</span> <i class="fa-solid fa-laptop-code text-indigo-400"></i>
+                </p>
+            </div>
+        </div>
     </footer>
 
     <script>
-        // ================= الإعدادات (ضع بياناتك الحقيقية هنا ليعمل فورا) =================
         const CONFIG = {
             spreadsheetId: '1siyS5wYgZ67HfdFx98127dmcNiUDLNuAAhZ15PC7raQ', 
-            appId: 'fff81242-afbe-4e49-aa96-5ba09e74b131', // معرف تطبيقك الصحيح
+            appId: 'fff81242-afbe-4e49-aa96-5ba09e74b131', 
             tableName: 'المنتجات',
-            whatsappNumber: '967737207420' // رقم واتساب التاجر مع الرمز الدولي بدون أصفار أو (+)
+            whatsappNumber: '967737207420' 
         };
-        
-        // =================================================================================
 
         let allProducts = [];
+        let currentCategory = 'الكل';
+        let modalInterval = null; // للتحكم بحركة صور المودال التلقائية
 
-        // دالة جلب البيانات الفورية من جوجل شيت
         async function loadProducts() {
             try {
                 const url = `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/export?format=csv&id=${CONFIG.spreadsheetId}`;
                 const response = await fetch(url);
                 const csvText = await response.text();
-                
                 allProducts = parseCSV(csvText);
-                
                 document.getElementById('loading').classList.add('hidden');
-                renderProducts(allProducts.filter(p => p.الحالة === 'متوفر'));
+                applyFilters();
             } catch (error) {
-                console.error("خطأ في جلب البيانات:", error);
-                document.getElementById('loading').innerHTML = `<p class="text-red-500 text-xs font-bold">فشل النظام في الاتصال بـ Google Sheets. تأكد من إعدادات المشاركة للرابط.</p>`;
+                console.error("خطأ:", error);
             }
         }
 
@@ -137,11 +207,48 @@
             return list;
         }
 
-        // دالة عرض المنتجات مع ميزة السلايدر للصور المتعددة وزر الواتساب المتقدم
+        function applyFilters() {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            const priceSortOption = document.getElementById('price-filter').value;
+            let filtered = allProducts.filter(p => p.الحالة === 'متوفر');
+
+            if (currentCategory !== 'الكل') {
+                filtered = filtered.filter(p => p.القسم === currentCategory || p.النوع === currentCategory);
+            }
+            if (searchQuery !== '') {
+                filtered = filtered.filter(p => 
+                    (p['اسم المنتج'] && p['اسم المنتج'].toLowerCase().includes(searchQuery)) ||
+                    (p.الوصف && p.الوصف.toLowerCase().includes(searchQuery))
+                );
+            }
+            if (priceSortOption === 'low') {
+                filtered = filtered.filter(p => parseFloat(p.開設 || 0) < 20000 || parseFloat(p.السعر || 0) < 20000);
+            } else if (priceSortOption === 'high') {
+                filtered = filtered.filter(p => parseFloat(p.السعر || 0) >= 20000);
+            } else if (priceSortOption === 'asc') {
+                filtered.sort((a, b) => parseFloat(a.السعر || 0) - parseFloat(b.السعر || 0));
+            } else if (priceSortOption === 'desc') {
+                filtered.sort((a, b) => parseFloat(b.السعر || 0) - parseFloat(a.السعر || 0));
+            }
+            renderProducts(filtered);
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            const buttons = document.querySelectorAll('#filter-buttons button');
+            buttons.forEach(btn => {
+                if(btn.innerText === category) {
+                    btn.className = "filter-btn bg-black text-white px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition";
+                } else {
+                    btn.className = "filter-btn bg-white text-gray-600 hover:bg-gray-100 px-4 py-1.5 rounded-full text-xs font-semibold border border-gray-200 whitespace-nowrap transition";
+                }
+            });
+            applyFilters();
+        }
+
         function renderProducts(products) {
             const container = document.getElementById('products-container');
             container.innerHTML = '';
-            
             if (products.length === 0) {
                 container.classList.add('hidden');
                 document.getElementById('no-products').classList.remove('hidden');
@@ -151,56 +258,26 @@
             container.classList.remove('hidden');
 
             products.forEach((product, pIndex) => {
-                // تجميع الصور المتاحة للمنتج (تأكد من تسمية الأعمدة في الشيت: الصورة 1، الصورة 2، الصورة 3)
                 let images = [];
                 if(product['الصورة 1'] || product['الصورة']) images.push(product['الصورة 1'] || product['الصورة']);
                 if(product['الصورة 2']) images.push(product['الصورة 2']);
                 if(product['الصورة 3']) images.push(product['الصورة 3']);
-                
                 if(images.length === 0) images.push('https://via.placeholder.com/600x600?text=No+Image');
 
-                // بناء الروابط الكاملة من سيرفر AppSheet لكل صورة
-                let imageUrls = images.map(img => {
-                    if (img.startsWith('http')) return img;
-                    return `https://www.appsheet.com/template/gettablefileurl?appName=${CONFIG.appId}&tableName=${encodeURIComponent(CONFIG.tableName)}&fileName=${encodeURIComponent(img)}`;
-                });
+                let imageUrls = images.map(img => img.startsWith('http') ? img : `https://www.appsheet.com/template/gettablefileurl?appName=${CONFIG.appId}&tableName=${encodeURIComponent(CONFIG.tableName)}&fileName=${encodeURIComponent(img)}`);
 
-                // تجهيز كود تصفح الصور المتعددة (Slider)
-                let imagesHtml = imageUrls.map((url, i) => `
-                    <img id="img-${pIndex}-${i}" src="${url}" class="w-full h-full object-cover absolute inset-0 transition-opacity duration-500 ${i === 0 ? 'opacity-100' : 'opacity-0'}" loading="lazy">
-                `).join('');
-
-                // تجهيز نص رسالة الواتساب التلقائية الذكية جداً للتاجر
-                const whatsappMessage = `مرحباً محل الشعب الفخم 🌟\nأود طلب المنتج التالي المعروض في موقعكم الإلكتروني:\n\n📦 اسم المنتج: ${product['اسم المنتج']}\n🔢 كود المنتج (ID): ${product.ID}\n💰 السعر الحالي: ${parseFloat(product.السعر || 0).toLocaleString()} ل.ي\n\n🔗 رابط صورة القطعة لضمان الطلب:\n${imageUrls[0]}`;
-                const encodedMessage = encodeURIComponent(whatsappMessage);
-                const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMessage}`;
-
-                // كود بطاقة العرض العالمية (Card)
                 const card = `
-                    <div class="product-card bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative group">
-                        
+                    <div onclick="openProductModal('${product.ID}')" class="product-card bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl cursor-pointer flex flex-col relative">
                         <div class="relative aspect-[3/4] w-full bg-neutral-100 overflow-hidden">
-                            ${imagesHtml}
-                            
-                            <span class="absolute top-3 right-3 bg-black text-white text-[10px] font-bold px-2.5 py-1 uppercase rounded-sm z-10 tracking-wider">${product.القسم}</span>
-                            
-                            ${imageUrls.length > 1 ? `
-                                <button onclick="changeImage(${pIndex}, -1, ${imageUrls.length})" class="arrow-btn opacity-0 absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-7 h-7 rounded-full flex items-center justify-center shadow-sm transition-all z-20"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                                <button onclick="changeImage(${pIndex}, 1, ${imageUrls.length})" class="arrow-btn opacity-0 absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-7 h-7 rounded-full flex items-center justify-center shadow-sm transition-all z-20"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-                            ` : ''}
+                            <img src="${imageUrls[0]}" class="w-full h-full object-cover" loading="lazy">
+                            <span class="absolute top-3 right-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider">${product.القسم}</span>
                         </div>
-                        
                         <div class="p-4 flex flex-col flex-grow text-right">
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">${product.النوع}</span>
-                            <h3 class="text-base font-bold text-neutral-900 mb-1 tracking-tight line-clamp-1">${product['اسم المنتج']}</h3>
-                            <p class="text-xs text-gray-500 line-clamp-2 mb-4 font-light leading-relaxed">${product.الوصف || 'لا يوجد وصف للمنتج.'}</p>
-                            
-                            <div class="flex justify-between items-center pt-3 border-t border-gray-50 mt-auto">
-                                <span class="text-lg font-black text-neutral-900">${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-xs font-normal text-gray-500">ل.ي</span></span>
-                                
-                                <a href="${whatsappUrl}" onclick="countClick('${product.ID}')" target="_blank" class="bg-black hover:bg-neutral-800 text-white text-xs font-bold px-4 py-2.5 rounded-sm transition flex items-center gap-2">
-                                    <i class="fa-brands fa-whatsapp text-sm text-emerald-400"></i> اطلب الآن
-                                </a>
+                            <span class="text-[9px] text-indigo-600 font-bold uppercase mb-1">${product.النوع}</span>
+                            <h3 class="text-sm font-bold text-neutral-900 mb-1 line-clamp-1">${product['اسم المنتج']}</h3>
+                            <div class="flex justify-between items-center pt-2.5 border-t border-gray-50 mt-auto">
+                                <span class="text-base font-black text-neutral-900">${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-xs md:text-base">ل.ي</span></span>
+                                <span class="text-[10px] text-indigo-500 font-bold bg-indigo-50 px-2 py-1 rounded">عرض التفاصيل ←</span>
                             </div>
                         </div>
                     </div>
@@ -209,50 +286,70 @@
             });
         }
 
-        // دالة التنقل بين الصور المتعددة للمنتج داخل الكرت
-        let currentImgIndexes = {};
-        function changeImage(productIdx, direction, totalImages) {
-            event.preventDefault();
-            if (!currentImgIndexes[productIdx]) currentImgIndexes[productIdx] = 0;
-            
-            // إخفاء الصورة الحالية
-            document.getElementById(`img-${productIdx}-${currentImgIndexes[productIdx]}`).classList.replace('opacity-100', 'opacity-0');
-            
-            // حساب مؤشر الصورة الجديدة
-            currentImgIndexes[productIdx] = (currentImgIndexes[productIdx] + direction + totalImages) % totalImages;
-            
-            // إظهار الصورة الجديدة
-            document.getElementById(`img-${productIdx}-${currentImgIndexes[productIdx]}`).classList.replace('opacity-0', 'opacity-100');
-        }
+        // 🌌 دالة فتح صفحة التفاصيل المنبثقة وتحريك الصور تلقائياً
+        function openProductModal(productId) {
+            const product = allProducts.find(p => p.ID === productId);
+            if (!product) return;
 
-        // دالة تصفية المنتجات الفورية
-        function filterCategory(category) {
-            const buttons = document.querySelectorAll('#filter-buttons button');
-            buttons.forEach(btn => {
-                if(btn.innerText === category) {
-                    btn.className = "filter-btn bg-black text-white px-5 py-2 rounded-full text-xs font-semibold shadow-sm transition";
-                } else {
-                    btn.className = "filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2 rounded-full text-xs font-semibold border border-gray-200 transition";
-                }
-            });
+            document.getElementById('modal-product-name').innerText = product['اسم المنتج'];
+            document.getElementById('modal-product-badge').innerText = `${product.القسم} | ${product.النوع}`;
+            document.getElementById('modal-product-desc').innerText = product.الوصف || 'لا توجد تفاصيل إضافية متاحة لهذه القطعة.';
+            document.getElementById('modal-product-price').innerHTML = `${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-xs font-normal text-gray-400">ل.ي</span>`;
 
-            let filtered = allProducts.filter(p => p.الحالة === 'متوفر');
-            if (category !== 'الكل') {
-                filtered = filtered.filter(p => p.القسم === category || p.النوع === category);
+            // إعداد الصور المتعددة للمودال
+            let images = [];
+            if(product['الصورة 1'] || product['الصورة']) images.push(product['الصورة 1'] || product['الصورة']);
+            if(product['الصورة 2']) images.push(product['الصورة 2']);
+            if(product['الصورة 3']) images.push(product['الصورة 3']);
+            if(images.length === 0) images.push('https://via.placeholder.com/600x600?text=No+Image');
+
+            let imageUrls = images.map(img => img.startsWith('http') ? img : `https://www.appsheet.com/template/gettablefileurl?appName=${CONFIG.appId}&tableName=${encodeURIComponent(CONFIG.tableName)}&fileName=${encodeURIComponent(img)}`);
+
+            const imgContainer = document.getElementById('modal-image-container');
+            imgContainer.innerHTML = imageUrls.map((url, i) => `
+                <img id="modal-img-${i}" src="${url}" class="fade-img w-full h-full object-cover absolute inset-0 ${i === 0 ? 'opacity-100' : 'opacity-0'}">
+            `).join('');
+
+            // توليد زر الواتساب الذكي للمودال
+            const whatsappMessage = `مرحباً محل الشعب 🌟\nأود طلب المنتج التالي المعروض في موقعكم:\n\n📦 المنتج: ${product['اسم المنتج']}\n🔢 الكود: ${product.ID}\n💰 السعر: ${parseFloat(product.السعر || 0).toLocaleString()} ل.ي`;
+            const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+            document.getElementById('modal-action-btn').innerHTML = `
+                <a href="${whatsappUrl}" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-center py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition shadow-md">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> إرسال الطلب عبر الواتساب فوراً
+                </a>
+            `;
+
+            // تفعيل الأنيميشن والظهور للمودال
+            const modal = document.getElementById('product-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.remove('scale-95');
+            modal.firstElementChild.classList.add('scale-100');
+            document.body.style.overflow = 'hidden'; // تجميد خلفية الموقع عند الفتح
+
+            // 🔄 كود تحريك ألبوم الصور المتعددة تلقائياً كل 3 ثوانٍ بالفيد الفخم (Fade Effect)
+            if(imageUrls.length > 1) {
+                let currentIdx = 0;
+                clearInterval(modalInterval);
+                modalInterval = setInterval(() => {
+                    document.getElementById(`modal-img-${currentIdx}`).classList.replace('opacity-100', 'opacity-0');
+                    currentIdx = (currentIdx + 1) % imageUrls.length;
+                    document.getElementById(`modal-img-${currentIdx}`).classList.replace('opacity-0', 'opacity-100');
+                }, 3000);
             }
-            renderProducts(filtered);
         }
 
-        // دالة إحصائية (اختيارية): يمكنك تطويرها لإرسال كليك للمقايضة المالية مع التاجر
-        function countClick(productId) {
-            console.log(`تم تسجيل نقرة طلب للمنتج رقم: ${productId}`);
-            // هنا يمكنك مستقبلاً ربط كود يضيف +1 في خلايا الجوجل شيت لتوثيق المبيعات للتاجر
+        // دالة إغلاق المودال
+        function closeProductModal() {
+            const modal = document.getElementById('product-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.replace('scale-100', 'scale-95');
+            document.body.style.overflow = 'auto'; // إعادة الروح لتصفح الموقع
+            clearInterval(modalInterval); // إيقاف التايمر لتوفير طاقة المعالج
         }
 
         window.onload = loadProducts;
-        // جلب البيانات وتحديث المنتجات تلقائياً كل 30 ثانية (30000 مللي ثانية)
-        setInterval(loadProducts, 30000);
-        
+        setInterval(applyFilters, 30000);
+
     </script>
 </body>
 </html>
