@@ -192,12 +192,20 @@ function getFileUrl(file){
 
 /* تحميل البيانات */
 async function loadProducts(){
-    const url = `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/export?format=csv`;
-    const res = await fetch(url);
-    const text = await res.text();
-    allProducts = parseCSV(text);
-    document.getElementById('loading').classList.add('hidden');
-    applyFilters();
+    try {
+        const url = `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/export?format=csv&id=${CONFIG.spreadsheetId}`;
+        
+        const res = await fetch(url);
+        const text = await res.text();
+
+        allProducts = parseCSV(text);
+
+        document.getElementById('loading').classList.add('hidden');
+        applyFilters();
+
+    } catch(e){
+        console.error("خطأ تحميل البيانات:", e);
+    }
 }
 
 /* قراءة CSV */
