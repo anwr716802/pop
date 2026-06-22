@@ -396,7 +396,17 @@ function closeProductModal() {
 }
 
 loadProducts();
+
+    
 </script>
+    <script>
+setInterval(() => {
+    const modal = document.getElementById('product-modal');
+    if (modal.classList.contains('pointer-events-none')) {
+        loadProducts();
+    }
+}, 30000);
+    </script>
 
 </body>
     </html>
