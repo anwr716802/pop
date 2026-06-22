@@ -170,7 +170,8 @@
         </div>
     </footer>
 
-    <script>
+        
+<script>
 const CONFIG = {
     spreadsheetId: '1siyS5wYgZ67HfdFx98127dmcNiUDLNuAAhZ15PC7raQ',
     appId: 'fff81242-afbe-4e49-aa96-5ba09e74b131',
@@ -182,163 +183,216 @@ let allProducts = [];
 let currentCategory = 'الكل';
 let modalInterval = null;
 
-/* تحويل رابط AppSheet */
-function getFileUrl(file){
-    if(!file) return null;
-    if(file.startsWith('http')) return file;
-
+function getFileUrl(file) {
+    if (!file) return '';
+    if (file.startsWith('http')) return file;
     return `https://www.appsheet.com/template/gettablefileurl?appName=${CONFIG.appId}&tableName=${encodeURIComponent(CONFIG.tableName)}&fileName=${encodeURIComponent(file)}`;
 }
 
-/* تحميل البيانات */
-async function loadProducts(){
+async function loadProducts() {
     try {
         const url = `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/export?format=csv&id=${CONFIG.spreadsheetId}`;
-        
-        const res = await fetch(url);
-        const text = await res.text();
-
-        allProducts = parseCSV(text);
-
+        const response = await fetch(url);
+        const csvText = await response.text();
+        allProducts = parseCSV(csvText);
         document.getElementById('loading').classList.add('hidden');
         applyFilters();
-
-    } catch(e){
-        console.error("خطأ تحميل البيانات:", e);
+    } catch (error) {
+        console.error("خطأ تحميل البيانات:", error);
     }
 }
 
-/* قراءة CSV */
-function parseCSV(text){
+function parseCSV(text) {
     const lines = text.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
-    let data = [];
-
-    for(let i=1;i<lines.length;i++){
-        if(!lines[i]) continue;
-        let row = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-        let obj = {};
-        headers.forEach((h,j)=>{
-            let val = row[j] ? row[j].replace(/^"|"$/g,'').trim() : "";
-            obj[h] = val;
-        });
-        data.push(obj);
+    const headers = lines[0].split(',').map(h => h.trim().replace(/[\r\n]/g, ""));
+    const list = [];
+    for (let i = 1; i < lines.length; i++) {
+        if (!lines[i]) continue;
+        const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        const obj = {};
+        for (let j = 0; j < headers.length; j++) {
+            let val = currentline[j] ? currentline[j].trim() : "";
+            val = val.replace(/^"|"$/g, "").replace(/[\r\n]/g, "");
+            obj[headers[j]] = val;
+        }
+        list.push(obj);
     }
-    return data;
+    return list;
 }
 
-/* ترتيب الباقة */
-function sortByPackage(list){
-    const order = { 'ممتاز':1, 'جيد':2, 'مبتدئ':3 };
-    return list.sort((a,b)=> (order[a.الباقة]||99)-(order[b.الباقة]||99));
+function sortByPackage(list) {
+    const order = { 'ممتاز': 1, 'جيد': 2, 'مبتدئ': 3 };
+    return list.sort((a, b) => (order[a.الباقة] || 99) - (order[b.الباقة] || 99));
 }
 
-/* فلترة */
-function applyFilters(){
-    let search = document.getElementById('search-input').value.toLowerCase();
-    let sort = document.getElementById('price-filter').value;
+function applyFilters() {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+    const priceSortOption = document.getElementById('price-filter').value;
 
-    let list = allProducts.filter(p=>p.الحالة==='متوفر');
+    let filtered = allProducts.filter(p => p.الحالة === 'متوفر');
 
-    if(currentCategory !== 'الكل'){
-        list = list.filter(p=> p.القسم===currentCategory || p.النوع===currentCategory);
+    if (currentCategory !== 'الكل') {
+        filtered = filtered.filter(p => p.القسم === currentCategory || p.النوع === currentCategory);
     }
 
-    if(search){
-        list = list.filter(p =>
-            (p['اسم العقار']||'').toLowerCase().includes(search) ||
-            (p['اسم المنتج']||'').toLowerCase().includes(search) ||
-            (p.الوصف||'').toLowerCase().includes(search)
+    if (searchQuery !== '') {
+        filtered = filtered.filter(p =>
+            (p['اسم المنتج'] && p['اسم المنتج'].toLowerCase().includes(searchQuery)) ||
+            (p['اسم العقار'] && p['اسم العقار'].toLowerCase().includes(searchQuery)) ||
+            (p.الوصف && p.الوصف.toLowerCase().includes(searchQuery))
         );
     }
 
-    list = sortByPackage(list);
+    filtered = sortByPackage(filtered);
 
-    if(sort==='low') list = list.filter(p=>parseFloat(p.السعر||0)<20000);
-    if(sort==='high') list = list.filter(p=>parseFloat(p.السعر||0)>=20000);
-    if(sort==='asc') list.sort((a,b)=>parseFloat(a.السعر||0)-parseFloat(b.السعر||0));
-    if(sort==='desc') list.sort((a,b)=>parseFloat(b.السعر||0)-parseFloat(a.السعر||0));
+    if (priceSortOption === 'low') {
+        filtered = filtered.filter(p => parseFloat(p.السعر || 0) < 20000);
+    } else if (priceSortOption === 'high') {
+        filtered = filtered.filter(p => parseFloat(p.السعر || 0) >= 20000);
+    } else if (priceSortOption === 'asc') {
+        filtered.sort((a, b) => parseFloat(a.السعر || 0) - parseFloat(b.السعر || 0));
+    } else if (priceSortOption === 'desc') {
+        filtered.sort((a, b) => parseFloat(b.السعر || 0) - parseFloat(a.السعر || 0));
+    }
 
-    renderProducts(list);
+    renderProducts(filtered);
 }
 
-function filterCategory(cat){
-    currentCategory = cat;
+function filterCategory(category) {
+    currentCategory = category;
+    const buttons = document.querySelectorAll('#filter-buttons button');
+    buttons.forEach(btn => {
+        if (btn.innerText === category) {
+            btn.className = "filter-btn bg-black text-white px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition";
+        } else {
+            btn.className = "filter-btn bg-white text-gray-600 hover:bg-gray-100 px-4 py-1.5 rounded-full text-xs font-semibold border border-gray-200 whitespace-nowrap transition";
+        }
+    });
     applyFilters();
 }
 
-/* عرض الكروت */
-function renderProducts(products){
+function renderProducts(products) {
     const container = document.getElementById('products-container');
     container.innerHTML = '';
 
-    products.forEach(p=>{
-        let img = getFileUrl(p['الصورة 1'] || p['الصورة']);
+    if (products.length === 0) {
+        container.classList.add('hidden');
+        document.getElementById('no-products').classList.remove('hidden');
+        return;
+    }
 
-        container.innerHTML += `
-        <div class="product-card bg-white p-2 rounded shadow cursor-pointer"
-             onclick="openProductModal('${p.ID}')">
-            <img src="${img}" class="w-full h-40 object-cover rounded">
-            <h3 class="font-bold text-sm mt-2">${p['اسم العقار'] || p['اسم المنتج']}</h3>
-            <p class="text-xs text-gray-500">${p.النوع}</p>
-            <p class="font-bold">${p.السعر} ريال</p>
-        </div>
+    document.getElementById('no-products').classList.add('hidden');
+    container.classList.remove('hidden');
+
+    products.forEach((product) => {
+        let mainImage = getFileUrl(product['الصورة 1'] || product['الصورة'] || '');
+        let packageBadge = product['الباقة'] || '';
+
+        const badgeClass =
+            packageBadge === 'ممتاز' ? 'bg-yellow-500' :
+            packageBadge === 'جيد' ? 'bg-blue-500' :
+            packageBadge === 'مبتدئ' ? 'bg-gray-500' :
+            'bg-black';
+
+        const card = `
+            <div onclick="openProductModal('${product.ID}')" class="product-card bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl cursor-pointer flex flex-col relative">
+                <div class="relative aspect-[3/4] w-full bg-neutral-100 overflow-hidden">
+                    <img src="${mainImage}" class="w-full h-full object-cover" loading="lazy">
+                    ${packageBadge ? `<span class="absolute top-3 left-3 ${badgeClass} text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider">${packageBadge}</span>` : ''}
+                    <span class="absolute top-3 right-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider">${product.القسم || ''}</span>
+                </div>
+                <div class="p-4 flex flex-col flex-grow text-right">
+                    <span class="text-[9px] text-indigo-600 font-bold uppercase mb-1">${product.النوع || ''}</span>
+                    <h3 class="text-sm font-bold text-neutral-900 mb-1 line-clamp-1">${product['اسم المنتج'] || ''}</h3>
+                    <div class="flex justify-between items-center pt-2.5 border-t border-gray-50 mt-auto">
+                        <span class="text-base font-black text-neutral-900">${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-xs md:text-base">ل.ي</span></span>
+                        <span class="text-[10px] text-indigo-500 font-bold bg-indigo-50 px-2 py-1 rounded">عرض التفاصيل ←</span>
+                    </div>
+                </div>
+            </div>
         `;
+        container.innerHTML += card;
     });
 }
 
-/* فتح المودال */
-function openProductModal(id){
-    const p = allProducts.find(x=>x.ID===id);
-    if(!p) return;
+function openProductModal(productId) {
+    const product = allProducts.find(p => p.ID === productId);
+    if (!product) return;
 
-    document.getElementById('product-modal').classList.remove('opacity-0','pointer-events-none');
-    document.querySelector('#product-modal > div').classList.remove('scale-95');
+    const modal = document.getElementById('product-modal');
+    const modalBox = modal.querySelector('div');
 
-    document.getElementById('modal-product-name').innerText = p['اسم العقار'] || p['اسم المنتج'];
-    document.getElementById('modal-product-badge').innerText = `${p.القسم} | ${p.النوع}`;
-    document.getElementById('modal-product-desc').innerText = p.الوصف || '';
-    document.getElementById('modal-product-price').innerHTML =
-        `${parseFloat(p.السعر||0).toLocaleString()} ريال`;
+    document.getElementById('modal-product-name').innerText = product['اسم المنتج'] || '';
+    document.getElementById('modal-product-badge').innerText = `${product.القسم || ''} | ${product.النوع || ''} | ${product.الباقة || ''}`;
+    document.getElementById('modal-product-desc').innerText = product.الوصف || 'لا توجد تفاصيل إضافية متاحة لهذا العقار.';
+    document.getElementById('modal-product-price').innerHTML = `${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-base md:text-lg">ل.ي</span>`;
 
     let images = [];
-    ['الصورة 1','الصورة 2','الصورة 3','الصورة 4','الصورة 5'].forEach(k=>{
-        if(p[k]) images.push(getFileUrl(p[k]));
-    });
+    if (product['الصورة 1']) images.push(getFileUrl(product['الصورة 1']));
+    if (product['الصورة 2']) images.push(getFileUrl(product['الصورة 2']));
+    if (product['الصورة 3']) images.push(getFileUrl(product['الصورة 3']));
+    if (product['الصورة 4']) images.push(getFileUrl(product['الصورة 4']));
+    if (product['الصورة 5']) images.push(getFileUrl(product['الصورة 5']));
 
-    let video = getFileUrl(p['فيديو']);
-    let container = document.getElementById('modal-image-container');
+    const videoUrl = getFileUrl(product['فيديو']);
+    const container = document.getElementById('modal-image-container');
 
-    if(video){
+    if (modalInterval) {
+        clearInterval(modalInterval);
+        modalInterval = null;
+    }
+
+    if (videoUrl) {
         container.innerHTML = `
-        <video controls autoplay class="w-full h-full object-cover">
-            <source src="${video}" type="video/mp4">
-        </video>`;
+            <video controls autoplay class="w-full h-full object-cover">
+                <source src="${videoUrl}" type="video/mp4">
+            </video>
+        `;
     } else {
+        if (images.length === 0) {
+            images.push('https://via.placeholder.com/600x800?text=No+Image');
+        }
+
         let index = 0;
         container.innerHTML = `<img id="modal-img" src="${images[0]}" class="w-full h-full object-cover fade-img">`;
 
-        if(modalInterval) clearInterval(modalInterval);
-
-        modalInterval = setInterval(()=>{
-            index = (index+1)%images.length;
-            let img = document.getElementById('modal-img');
-
-            img.style.opacity = 0;
-            setTimeout(()=>{
-                img.src = images[index];
-                img.style.opacity = 1;
-            },300);
-
-        },2500);
+        if (images.length > 1) {
+            modalInterval = setInterval(() => {
+                index = (index + 1) % images.length;
+                const img = document.getElementById('modal-img');
+                if (!img) return;
+                img.style.opacity = 0;
+                setTimeout(() => {
+                    img.src = images[index];
+                    img.style.opacity = 1;
+                }, 300);
+            }, 2500);
+        }
     }
+
+    const msg = `مرحبا، أريد الاستفسار عن هذا العقار: ${product['اسم المنتج'] || ''} - السعر: ${product.السعر || ''}`;
+    document.getElementById('modal-action-btn').innerHTML = `
+        <a href="https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}" target="_blank"
+           class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition">
+            تواصل عبر واتساب
+        </a>
+    `;
+
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    modalBox.classList.remove('scale-95');
 }
 
-/* اغلاق */
-function closeProductModal(){
-    document.getElementById('product-modal').classList.add('opacity-0','pointer-events-none');
-    document.querySelector('#product-modal > div').classList.add('scale-95');
-    if(modalInterval) clearInterval(modalInterval);
+function closeProductModal() {
+    const modal = document.getElementById('product-modal');
+    const modalBox = modal.querySelector('div');
+
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    modalBox.classList.add('scale-95');
+
+    if (modalInterval) {
+        clearInterval(modalInterval);
+        modalInterval = null;
+    }
 }
 
 loadProducts();
