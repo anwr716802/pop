@@ -191,8 +191,7 @@ function getFileUrl(file) {
 
 async function loadProducts() {
     try {
-        const url = `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/export?format=csv&id=${CONFIG.spreadsheetId}`;
-        const response = await fetch(url);
+const url = `https://docs.google.com/spreadsheets/d/${CONFIG.spreadsheetId}/export?format=csv&id=${CONFIG.spreadsheetId}&t=${Date.now()}`; const response = await fetch(url);
         const csvText = await response.text();
         allProducts = parseCSV(csvText);
         document.getElementById('loading').classList.add('hidden');
