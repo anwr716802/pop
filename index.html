@@ -396,17 +396,13 @@ function closeProductModal() {
 }
 
 loadProducts();
-
+<script>
+setInterval(() => {
+    loadProducts();
+}, 30000); // كل 30 ثانية
+</script>
     
 </script>
-    <script>
-setInterval(() => {
-    const modal = document.getElementById('product-modal');
-    if (modal.classList.contains('pointer-events-none')) {
-        loadProducts();
-    }
-}, 30000);
-    </script>
-
+  
 </body>
     </html>
