@@ -290,35 +290,36 @@ function renderProducts(products) {
         let mainImage = getFileUrl(product['الصورة 1'] || product['الصورة'] || '');
 
         const card = `
-            <div onclick="openProductModal('${product.ID}')" class="product-card bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl cursor-pointer flex flex-col relative">
+        <div onclick="openProductModal('${product.ID}')" class="product-card bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl cursor-pointer flex flex-col">
+
+            <div class="relative aspect-[3/4] w-full bg-neutral-100 overflow-hidden">
+                <img src="${mainImage}" class="w-full h-full object-cover" loading="lazy">
                 
-                <div class="relative aspect-[3/4] w-full bg-neutral-100 overflow-hidden">
-                    <img src="${mainImage}" class="w-full h-full object-cover" loading="lazy">
-                    <span class="absolute top-3 right-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded">
-                        ${product.القسم || ''}
+                <span class="absolute top-3 right-3 bg-black text-white text-[9px] px-2 py-0.5 rounded">
+                    ${product.القسم || ''}
+                </span>
+            </div>
+
+            <div class="p-4 flex flex-col flex-grow text-right">
+                <span class="text-[9px] text-indigo-600 font-bold mb-1">
+                    ${product.النوع || ''}
+                </span>
+
+                <h3 class="text-sm font-bold text-neutral-900 mb-1 line-clamp-1">
+                    ${product['اسم المنتج'] || ''}
+                </h3>
+
+                <div class="flex justify-between items-center pt-2.5 border-t mt-auto">
+                    <span class="text-base font-black">
+                        ${parseFloat(product.السعر || 0).toLocaleString()} ل.ي
                     </span>
-                </div>
 
-                <div class="p-4 flex flex-col flex-grow text-right">
-                    <span class="text-[9px] text-indigo-600 font-bold mb-1">
-                        ${product.النوع || ''}
+                    <span class="text-[10px] text-indigo-500 font-bold bg-indigo-50 px-2 py-1 rounded">
+                        عرض التفاصيل ←
                     </span>
-
-                    <h3 class="text-sm font-bold text-neutral-900 mb-1 line-clamp-1">
-                        ${product['اسم المنتج'] || ''}
-                    </h3>
-
-                    <div class="flex justify-between items-center pt-2.5 border-t border-gray-50 mt-auto">
-                        <span class="text-base font-black text-neutral-900">
-                            ${parseFloat(product.السعر || 0).toLocaleString()} ل.ي
-                        </span>
-
-                        <span class="text-[10px] text-indigo-500 font-bold bg-indigo-50 px-2 py-1 rounded">
-                            عرض التفاصيل ←
-                        </span>
-                    </div>
                 </div>
             </div>
+        </div>
         `;
 
         container.innerHTML += card;
@@ -332,16 +333,17 @@ function openProductModal(productId) {
     const modalBox = modal.querySelector('div');
 
     document.getElementById('modal-product-name').innerText = product['اسم المنتج'] || '';
-    document.getElementById('modal-product-badge').innerText =`${product.القسم || ''} | ${product.النوع || ''}`;
-    document.getElementById('modal-product-desc').innerText = product.الوصف || 'لا توجد تفاصيل إضافية متاحة لهذا العقار.';
-    document.getElementById('modal-product-price').innerHTML = `${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-base md:text-lg">ل.ي</span>`;
+    document.getElementById('modal-product-badge').innerText = `${product.القسم || ''} | ${product.النوع || ''}`;
+    document.getElementById('modal-product-desc').innerText = product.الوصف || 'لا توجد تفاصيل';
+    document.getElementById('modal-product-price').innerHTML =
+        `${parseFloat(product.السعر || 0).toLocaleString()} ل.ي`;
 
     let images = [];
+
     if (product['الصورة 1']) images.push(getFileUrl(product['الصورة 1']));
     if (product['الصورة 2']) images.push(getFileUrl(product['الصورة 2']));
     if (product['الصورة 3']) images.push(getFileUrl(product['الصورة 3']));
     if (product['الصورة 4']) images.push(getFileUrl(product['الصورة 4']));
-    if (product['الصورة 5']) images.push(getFileUrl(product['الصورة 5']));
 
     const videoUrl = getFileUrl(product['فيديو']);
     const container = document.getElementById('modal-image-container');
@@ -351,52 +353,49 @@ function openProductModal(productId) {
         modalInterval = null;
     }
 
+    // ✅ إذا فيه فيديو
     if (videoUrl) {
         container.innerHTML = `
-            <video controls autoplay class="w-full h-full object-cover">
+            <video controls autoplay muted class="w-full h-full object-cover">
                 <source src="${videoUrl}" type="video/mp4">
             </video>
         `;
-    } else {
+    } 
+    // ✅ سلايدر صور
+    else {
         if (images.length === 0) {
-            images.push('https://via.placeholder.com/600x800?text=No+Image');
+            images.push('https://via.placeholder.com/600x800');
         }
 
         let index = 0;
-        container.innerHTML = `<img id="modal-img" src="${images[0]}" class="w-full h-full object-cover fade-img">`;
+
+        container.innerHTML = `
+            <img id="modal-img" src="${images[0]}" class="w-full h-full object-cover fade-img">
+        `;
 
         if (images.length > 1) {
             modalInterval = setInterval(() => {
-                index = (index + 1) % images.length;
                 const img = document.getElementById('modal-img');
                 if (!img) return;
+
                 img.style.opacity = 0;
+
                 setTimeout(() => {
-    const newImg = new Image();
-    newImg.src = images[index];
+                    index = (index + 1) % images.length;
+                    img.src = images[index];
 
-    newImg.onload = () => {
-        img.style.transition = "opacity 0.5s ease";
-img.style.opacity = 0;
+                    img.onload = () => {
+                        img.style.opacity = 1;
+                    };
+                }, 200);
 
-setTimeout(() => {
-    img.src = images[index];
-    img.onload = () => {
-        img.style.opacity = 1;
-    };
-}, 200);
-            }, 2500);
-
-    const msg = `مرحبا، أريد الاستفسار عن هذا العقار: ${product['اسم المنتج'] || ''} - السعر: ${product.السعر || ''}`;
-    document.getElementById('modal-action-btn').innerHTML = `
-        <a href="https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}" target="_blank"
-           class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition">
-            تواصل عبر واتساب
-        </a>
-    `;
+            }, 3000);
+        }
+    }
 
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modalBox.classList.remove('scale-95');
+    modalBox.classList.add('scale-100');
 }
 
 function closeProductModal() {
