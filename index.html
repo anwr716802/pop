@@ -337,6 +337,16 @@ function openProductModal(productId) {
     document.getElementById('modal-product-desc').innerText = product.الوصف || 'لا توجد تفاصيل';
     document.getElementById('modal-product-price').innerHTML =
         `${parseFloat(product.السعر || 0).toLocaleString()} ل.ي`;
+    const whatsappMsg = encodeURIComponent(`استفسار عن العقار: ${product['اسم المنتج'] || ''}`);
+const whatsappLink = `https://wa.me/${CONFIG.whatsappNumber}?text=${whatsappMsg}`;
+
+document.getElementById('modal-action-btn').innerHTML = `
+    <a href="${whatsappLink}" target="_blank"
+       class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl text-center font-bold text-sm block transition">
+       تواصل عبر واتساب
+    </a>
+`;
+    
 
     let images = [];
 
