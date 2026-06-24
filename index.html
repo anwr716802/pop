@@ -288,34 +288,42 @@ function renderProducts(products) {
 
     products.forEach((product) => {
         let mainImage = getFileUrl(product['الصورة 1'] || product['الصورة'] || '');
-        let packageBadge = product['الباقة'] || '';
-
-        const badgeClass =
-            packageBadge === 'ممتاز' ? 'bg-yellow-500' :
-            packageBadge === 'جيد' ? 'bg-blue-500' :
-            packageBadge === 'مبتدئ' ? 'bg-gray-500' :
-            'bg-black';
 
         const card = `
             <div onclick="openProductModal('${product.ID}')" class="product-card bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl cursor-pointer flex flex-col relative">
+                
                 <div class="relative aspect-[3/4] w-full bg-neutral-100 overflow-hidden">
                     <img src="${mainImage}" class="w-full h-full object-cover" loading="lazy">
-                                        <span class="absolute top-3 right-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider">${product.القسم || ''}</span>
+                    <span class="absolute top-3 right-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded">
+                        ${product.القسم || ''}
+                    </span>
                 </div>
+
                 <div class="p-4 flex flex-col flex-grow text-right">
-                    <span class="text-[9px] text-indigo-600 font-bold uppercase mb-1">${product.النوع || ''}</span>
-                    <h3 class="text-sm font-bold text-neutral-900 mb-1 line-clamp-1">${product['اسم المنتج'] || ''}</h3>
+                    <span class="text-[9px] text-indigo-600 font-bold mb-1">
+                        ${product.النوع || ''}
+                    </span>
+
+                    <h3 class="text-sm font-bold text-neutral-900 mb-1 line-clamp-1">
+                        ${product['اسم المنتج'] || ''}
+                    </h3>
+
                     <div class="flex justify-between items-center pt-2.5 border-t border-gray-50 mt-auto">
-                        <span class="text-base font-black text-neutral-900">${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-xs md:text-base">ل.ي</span></span>
-                        <span class="text-[10px] text-indigo-500 font-bold bg-indigo-50 px-2 py-1 rounded">عرض التفاصيل ←</span>
+                        <span class="text-base font-black text-neutral-900">
+                            ${parseFloat(product.السعر || 0).toLocaleString()} ل.ي
+                        </span>
+
+                        <span class="text-[10px] text-indigo-500 font-bold bg-indigo-50 px-2 py-1 rounded">
+                            عرض التفاصيل ←
+                        </span>
                     </div>
                 </div>
             </div>
         `;
+
         container.innerHTML += card;
     });
 }
-
 function openProductModal(productId) {
     const product = allProducts.find(p => p.ID === productId);
     if (!product) return;
@@ -368,12 +376,13 @@ function openProductModal(productId) {
     newImg.src = images[index];
 
     newImg.onload = () => {
-        img.style.opacity = 0;
+        img.style.transition = "opacity 0.5s ease";
+img.style.opacity = 0;
 
-        setTimeout(() => {
-            img.src = images[index];
-            img.style.opacity = 1;
-        }, 200);
+setTimeout(() => {
+    img.src = images[index];
+    img.onload = () => {
+        img.style.opacity = 1;
     };
 }, 200);
             }, 2500);
