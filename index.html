@@ -300,8 +300,7 @@ function renderProducts(products) {
             <div onclick="openProductModal('${product.ID}')" class="product-card bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-xl cursor-pointer flex flex-col relative">
                 <div class="relative aspect-[3/4] w-full bg-neutral-100 overflow-hidden">
                     <img src="${mainImage}" class="w-full h-full object-cover" loading="lazy">
-                    ${packageBadge ? `<span class="absolute top-3 left-3 ${badgeClass} text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider">${packageBadge}</span>` : ''}
-                    <span class="absolute top-3 right-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider">${product.القسم || ''}</span>
+                                        <span class="absolute top-3 right-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider">${product.القسم || ''}</span>
                 </div>
                 <div class="p-4 flex flex-col flex-grow text-right">
                     <span class="text-[9px] text-indigo-600 font-bold uppercase mb-1">${product.النوع || ''}</span>
@@ -325,7 +324,7 @@ function openProductModal(productId) {
     const modalBox = modal.querySelector('div');
 
     document.getElementById('modal-product-name').innerText = product['اسم المنتج'] || '';
-    document.getElementById('modal-product-badge').innerText = `${product.القسم || ''} | ${product.النوع || ''} | ${product.الباقة || ''}`;
+    document.getElementById('modal-product-badge').innerText =`${product.القسم || ''} | ${product.النوع || ''}`;
     document.getElementById('modal-product-desc').innerText = product.الوصف || 'لا توجد تفاصيل إضافية متاحة لهذا العقار.';
     document.getElementById('modal-product-price').innerHTML = `${parseFloat(product.السعر || 0).toLocaleString()} <span class="text-base md:text-lg">ل.ي</span>`;
 
@@ -365,12 +364,19 @@ function openProductModal(productId) {
                 if (!img) return;
                 img.style.opacity = 0;
                 setTimeout(() => {
-                    img.src = images[index];
-                    img.style.opacity = 1;
-                }, 300);
+    const newImg = new Image();
+    newImg.src = images[index];
+
+    newImg.onload = () => {
+        img.style.opacity = 0;
+
+        setTimeout(() => {
+            img.src = images[index];
+            img.style.opacity = 1;
+        }, 200);
+    };
+}, 200);
             }, 2500);
-        }
-    }
 
     const msg = `مرحبا، أريد الاستفسار عن هذا العقار: ${product['اسم المنتج'] || ''} - السعر: ${product.السعر || ''}`;
     document.getElementById('modal-action-btn').innerHTML = `
