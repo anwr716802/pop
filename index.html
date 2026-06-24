@@ -22,7 +22,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    
+
+
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
     <style>
         body { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
         .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -41,7 +44,10 @@
             <span>هذا الموقع برعايه مؤسسة الشعب للمقاولات العامة - مأرب</span> 
         </a>
     </div>
-
+     <button id="installBtn" style="display:none"
+class="fixed bottom-5 left-5 bg-black text-white px-4 py-2 rounded-lg">
+تثبيت التطبيق
+     </button>
     <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div class="container mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
             <a href="#" class="text-xl md:text-2xl font-black text-neutral-900 tracking-wide flex items-center gap-1.5">
@@ -172,6 +178,29 @@
 
         
 <script>
+    let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  document.getElementById('installBtn').style.display = 'block';
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+
+  const { outcome } = await deferredPrompt.userChoice;
+
+  if (outcome === 'accepted') {
+    console.log('تم التثبيت');
+  }
+
+  deferredPrompt = null;
+});
+    
 const CONFIG = {
     spreadsheetId: '1siyS5wYgZ67HfdFx98127dmcNiUDLNuAAhZ15PC7raQ',
     appId: 'fff81242-afbe-4e49-aa96-5ba09e74b131',
@@ -428,6 +457,10 @@ setInterval(() => {
 }, 30000); // كل 30 ثانية
     
 </script>
-  
+  <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+  </script>
 </body>
     </html>
