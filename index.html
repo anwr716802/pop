@@ -354,7 +354,7 @@ function renderProducts(products) {
         container.innerHTML += card;
     });
 }
-function openProductModal(productId) {
+    function openProductModal(productId) {
     const product = allProducts.find(p => p.ID === productId);
     if (!product) return;
 
@@ -366,105 +366,95 @@ function openProductModal(productId) {
     document.getElementById('modal-product-desc').innerText = product.الوصف || 'لا توجد تفاصيل';
     document.getElementById('modal-product-price').innerHTML =
         `${parseFloat(product.السعر || 0).toLocaleString()} ل.ي`;
+
+    // زر الواتساب
     const whatsappMsg = encodeURIComponent(`استفسار عن العقار: ${product['اسم المنتج'] || ''}`);
-const whatsappLink = `https://wa.me/${CONFIG.whatsappNumber}?text=${whatsappMsg}`;
+    const whatsappLink = `https://wa.me/${CONFIG.whatsappNumber}?text=${whatsappMsg}`;
 
-document.getElementById('modal-action-btn').innerHTML = `
-    <a href="${whatsappLink}" target="_blank"
-       class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl text-center font-bold text-sm block transition">
-       تواصل عبر واتساب
-    </a>
-`;
-    
+    document.getElementById('modal-action-btn').innerHTML = `
+        <a href="${whatsappLink}" target="_blank"
+        class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl text-center font-bold text-sm block transition">
+        تواصل عبر واتساب
+        </a>
+    `;
 
+    const container = document.getElementById('modal-image-container');
+
+    // صور
     let images = [];
-
     if (product['الصورة 1']) images.push(getFileUrl(product['الصورة 1']));
     if (product['الصورة 2']) images.push(getFileUrl(product['الصورة 2']));
     if (product['الصورة 3']) images.push(getFileUrl(product['الصورة 3']));
     if (product['الصورة 4']) images.push(getFileUrl(product['الصورة 4']));
+    if (product['الصورة 5']) images.push(getFileUrl(product['الصورة 5']));
 
-    const container = document.getElementById('modal-image-container');
+    // فيديو
+    let videoUrl = (product['فيديو'] || '').trim();
 
-// جمع الصور
-let images = [];
-if (product['الصورة 1']) images.push(getFileUrl(product['الصورة 1']));
-if (product['الصورة 2']) images.push(getFileUrl(product['الصورة 2']));
-if (product['الصورة 3']) images.push(getFileUrl(product['الصورة 3']));
-if (product['الصورة 4']) images.push(getFileUrl(product['الصورة 4']));
-if (product['الصورة 5']) images.push(getFileUrl(product['الصورة 5']));
+    // إيقاف السلايدر السابق
+    if (modalInterval) {
+        clearInterval(modalInterval);
+        modalInterval = null;
+    }
 
-// رابط الفيديو
-let videoUrl = product['فيديو'] || "";
+    // عرض الفيديو إذا موجود
+    if (videoUrl) {
 
-// تنظيف الرابط
-videoUrl = videoUrl.trim();
+        // يوتيوب
+        if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+            let embed = videoUrl
+                .replace("watch?v=", "embed/")
+                .replace("youtu.be/", "youtube.com/embed/");
 
-// إيقاف أي سلايدر سابق
-if (modalInterval) {
-  clearInterval(modalInterval);
-  modalInterval = null;
-}
+            container.innerHTML = `
+                <iframe src="${embed}" 
+                class="w-full h-full object-cover"
+                frameborder="0"
+                allowfullscreen></iframe>
+            `;
+        } else {
+            // mp4
+            container.innerHTML = `
+                <video controls autoplay muted playsinline
+                class="w-full h-full object-cover">
+                    <source src="${videoUrl}" type="video/mp4">
+                </video>
+            `;
+        }
 
-// --- 1: إذا فيه فيديو ---
-if (videoUrl) {
+    } else {
 
-  // يوتيوب
-  if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-    let embed = videoUrl
-      .replace("watch?v=", "embed/")
-      .replace("youtu.be/", "youtube.com/embed/");
+        // صور
+        if (images.length === 0) {
+            images.push('https://via.placeholder.com/600x800');
+        }
 
-    container.innerHTML = `
-      <iframe src="${embed}" 
-        class="w-full h-full object-cover"
-        frameborder="0"
-        allowfullscreen>
-      </iframe>
-    `;
+        let index = 0;
 
-  } else {
-    // فيديو مباشر mp4
-    container.innerHTML = `
-      <video controls autoplay muted playsinline
-        class="w-full h-full object-cover">
-        <source src="${videoUrl}" type="video/mp4">
-      </video>
-    `;
-  }
+        container.innerHTML = `
+            <img id="modal-img" src="${images[0]}"
+            class="w-full h-full object-cover transition-opacity duration-500 opacity-100">
+        `;
 
-} else {
+        if (images.length > 1) {
+            modalInterval = setInterval(() => {
+                index = (index + 1) % images.length;
 
-  // --- 2: الصور ---
-  if (images.length === 0) {
-    images.push('https://via.placeholder.com/600x800');
-  }
+                const img = document.getElementById('modal-img');
+                if (!img) return;
 
-  let index = 0;
+                img.style.opacity = 0;
 
-  container.innerHTML = `
-    <img id="modal-img" src="${images[0]}"
-    class="w-full h-full object-cover transition-opacity duration-500 opacity-100">
-  `;
+                setTimeout(() => {
+                    img.src = images[index];
+                    img.style.opacity = 1;
+                }, 300);
 
-  if (images.length > 1) {
-    modalInterval = setInterval(() => {
-      index = (index + 1) % images.length;
+            }, 3000);
+        }
+    }
 
-      const img = document.getElementById('modal-img');
-      if (!img) return;
-
-      img.style.opacity = 0;
-
-      setTimeout(() => {
-        img.src = images[index];
-        img.style.opacity = 1;
-      }, 300);
-
-    }, 3000);
-  }
-}
-
+    // فتح المودال
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modalBox.classList.remove('scale-95');
     modalBox.classList.add('scale-100');
