@@ -384,53 +384,86 @@ document.getElementById('modal-action-btn').innerHTML = `
     if (product['الصورة 3']) images.push(getFileUrl(product['الصورة 3']));
     if (product['الصورة 4']) images.push(getFileUrl(product['الصورة 4']));
 
-    const videoUrl = getFileUrl(product['فيديو']);
     const container = document.getElementById('modal-image-container');
 
-    if (modalInterval) {
-        clearInterval(modalInterval);
-        modalInterval = null;
-    }
+// جمع الصور
+let images = [];
+if (product['الصورة 1']) images.push(getFileUrl(product['الصورة 1']));
+if (product['الصورة 2']) images.push(getFileUrl(product['الصورة 2']));
+if (product['الصورة 3']) images.push(getFileUrl(product['الصورة 3']));
+if (product['الصورة 4']) images.push(getFileUrl(product['الصورة 4']));
+if (product['الصورة 5']) images.push(getFileUrl(product['الصورة 5']));
 
-    // ✅ إذا فيه فيديو
-    if (videoUrl) {
-        container.innerHTML = `
-            <video controls autoplay muted class="w-full h-full object-cover">
-                <source src="${videoUrl}" type="video/mp4">
-            </video>
-        `;
-    } 
-    // ✅ سلايدر صور
-    else {
-        if (images.length === 0) {
-            images.push('https://via.placeholder.com/600x800');
-        }
+// رابط الفيديو
+let videoUrl = product['فيديو'] || "";
 
-        let index = 0;
+// تنظيف الرابط
+videoUrl = videoUrl.trim();
 
-        container.innerHTML = `
-            <img id="modal-img" src="${images[0]}" class="w-full h-full object-cover fade-img">
-        `;
+// إيقاف أي سلايدر سابق
+if (modalInterval) {
+  clearInterval(modalInterval);
+  modalInterval = null;
+}
 
-        if (images.length > 1) {
-            modalInterval = setInterval(() => {
-                const img = document.getElementById('modal-img');
-                if (!img) return;
+// --- 1: إذا فيه فيديو ---
+if (videoUrl) {
 
-                img.style.opacity = 0;
+  // يوتيوب
+  if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+    let embed = videoUrl
+      .replace("watch?v=", "embed/")
+      .replace("youtu.be/", "youtube.com/embed/");
 
-                setTimeout(() => {
-                    index = (index + 1) % images.length;
-                    img.src = images[index];
+    container.innerHTML = `
+      <iframe src="${embed}" 
+        class="w-full h-full object-cover"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    `;
 
-                    img.onload = () => {
-                        img.style.opacity = 1;
-                    };
-                }, 200);
+  } else {
+    // فيديو مباشر mp4
+    container.innerHTML = `
+      <video controls autoplay muted playsinline
+        class="w-full h-full object-cover">
+        <source src="${videoUrl}" type="video/mp4">
+      </video>
+    `;
+  }
 
-            }, 3000);
-        }
-    }
+} else {
+
+  // --- 2: الصور ---
+  if (images.length === 0) {
+    images.push('https://via.placeholder.com/600x800');
+  }
+
+  let index = 0;
+
+  container.innerHTML = `
+    <img id="modal-img" src="${images[0]}"
+    class="w-full h-full object-cover transition-opacity duration-500 opacity-100">
+  `;
+
+  if (images.length > 1) {
+    modalInterval = setInterval(() => {
+      index = (index + 1) % images.length;
+
+      const img = document.getElementById('modal-img');
+      if (!img) return;
+
+      img.style.opacity = 0;
+
+      setTimeout(() => {
+        img.src = images[index];
+        img.style.opacity = 1;
+      }, 300);
+
+    }, 3000);
+  }
+}
 
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modalBox.classList.remove('scale-95');
